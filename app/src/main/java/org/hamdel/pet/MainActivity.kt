@@ -78,7 +78,7 @@ class MainActivity : Activity() {
         root = column()
         root.addView(title("همدل‌پت"))
         root.addView(text("دوست کوچولوی مجازی تو"))
-        root.addView(text("🐾 حیوانک همدل 🐾"))
+        root.addView(PetFaceView(this).apply { contentDescription = "حیوانک همدل؛ تصویر تزئینی یک حیوانک گرد و زرد" })
         stats = text("")
         root.addView(stats)
         status = text("خوش اومدی! یکی از گزینه‌ها رو انتخاب کن.")
