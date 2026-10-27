@@ -35,11 +35,14 @@ class MainActivity : Activity() {
         showHome()
     }
 
+    private fun dp(value: Int): Int =
+        (value * resources.displayMetrics.density + 0.5f).toInt()
+
     private fun column(): LinearLayout = LinearLayout(this).apply {
         orientation = LinearLayout.VERTICAL
         gravity = Gravity.CENTER_HORIZONTAL
         layoutDirection = View.LAYOUT_DIRECTION_LOCALE
-        setPadding(20, 20, 20, 24)
+        setPadding(dp(20), dp(20), dp(20), dp(24))
     }
 
     private fun title(value: String) = TextView(this).apply {
@@ -48,14 +51,14 @@ class MainActivity : Activity() {
         typeface = Typeface.DEFAULT_BOLD
         gravity = Gravity.CENTER
         contentDescription = value
-        setPadding(8, 16, 8, 16)
+        setPadding(dp(8), dp(16), dp(8), dp(16))
     }
 
     private fun text(value: String) = TextView(this).apply {
         text = value
         textSize = 18f
         gravity = Gravity.CENTER
-        setPadding(8, 10, 8, 10)
+        setPadding(dp(8), dp(10), dp(8), dp(10))
     }
 
     private fun action(label: String, hint: String = label, run: () -> Unit) = Button(this).apply {
@@ -63,7 +66,7 @@ class MainActivity : Activity() {
         contentDescription = hint
         isAllCaps = false
         textSize = 18f
-        minHeight = 56
+        minHeight = dp(56)
         setOnClickListener { run() }
     }
 
@@ -79,7 +82,10 @@ class MainActivity : Activity() {
         root.addView(title("همدل‌پت"))
         root.addView(text("دوست کوچولوی مجازی تو"))
         root.addView(PetFaceView(this).apply { contentDescription = "حیوانک همدل؛ تصویر تزئینی یک حیوانک گرد و زرد" })
-        stats = text("")
+        stats = text("").apply {
+            contentDescription = "وضعیت حیوانک شامل گرسنگی، تمیزی، انرژی و خوشحالی"
+            importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
+        }
         root.addView(stats)
         status = text("خوش اومدی! یکی از گزینه‌ها رو انتخاب کن.")
         status.accessibilityLiveRegion = View.ACCESSIBILITY_LIVE_REGION_POLITE
@@ -119,8 +125,9 @@ class MainActivity : Activity() {
     }
 
     private fun announce(message: String) {
+        // The polite live region announces the updated message without forcing an
+        // additional announcement event that can cause duplicate speech in TalkBack.
         status.text = message
-        status.sendAccessibilityEvent(AccessibilityEvent.TYPE_ANNOUNCEMENT)
     }
 
     private fun showAbout() {
@@ -156,13 +163,13 @@ class MainActivity : Activity() {
             text = copy
             textSize = 17f
             gravity = Gravity.START
-            setPadding(8, 12, 8, 12)
+            setPadding(dp(8), dp(12), dp(8), dp(12))
             textDirection = View.TEXT_DIRECTION_LOCALE
         }
         page.addView(paragraph)
         val links = TextView(this).apply {
             textSize = 18f
-            setPadding(8, 16, 8, 16)
+            setPadding(dp(8), dp(16), dp(8), dp(16))
             val items = listOf(
                 "وب‌سایت رسمی Pou" to "https://www.pou.me",
                 "مخزن پروژهٔ همدل‌پت" to "https://github.com/amir9500000095-hash/AI",
